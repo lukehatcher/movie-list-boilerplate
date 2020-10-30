@@ -7,12 +7,12 @@ class MovieList extends React.Component {
     }
 
     randomKey() {
-        return Math.random() * Math.random() * Math.random() * Math.random();
+        return Math.random() * Math.random() * Math.random();
     }
 
     render() {
         return (
-        <div>{this.props.movies.map(movie => <Movie movie={movie} key={Math.random()}/>)}</div>
+        <div>{this.props.movies.map(movie => <Movie movie={movie} key={this.randomKey()} />)}</div>
         );
     }
 }
