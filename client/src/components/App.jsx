@@ -7,13 +7,13 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      movies: [{title: 'Initial Movie Name lol'}, {title: 'star warss'}],
+      movies: [], // {title: 'movie'}, {title: 'star wars'}, {title: 'star trek'}
       searchValue: '',
       newMovieValue: ''
     }
 
     this.handleSearchInput = this.handleSearchInput.bind(this);
-    this.handleSearchSubmit = this.handleSearchSubmit.bind(this); // might not need
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     this.handleNewMovieChange = this.handleNewMovieChange.bind(this);
     this.handleNewMovieSubmit = this.handleNewMovieSubmit.bind(this);
   }
@@ -26,10 +26,10 @@ class App extends React.Component {
     });
   }
 
-  handleSearchSubmit() {
+  handleSearchSubmit(e) {
+    e.preventDefault();
     let titles = this.state.movies.map(x => x.title);
-    console.log(this.state.searchValue);
-    console.log(titles);
+    // if the text input matches...
     if (titles.indexOf(this.state.searchValue) >= 0) {
       this.setState({
         movies: [{title: this.state.searchValue}]
@@ -37,10 +37,12 @@ class App extends React.Component {
     } else {
       alert('Sorry, no match found...')
     }
+    // e.target.value = ''; // clear text box?
   }
 
   handleNewMovieChange(e) {
     this.state.newMovieValue = e.target.value;
+    // e.target.value = ''; // clear text box?
   }
 
   handleNewMovieSubmit(e) {
@@ -58,9 +60,11 @@ class App extends React.Component {
         handleNewMovieSubmit={this.handleNewMovieSubmit} 
         />
 
-        <SearchBar handleSearchInput={this.handleSearchInput}/>
+        <SearchBar 
+        handleSearchInput={this.handleSearchInput}
+        handleSearchSubmit={this.handleSearchSubmit}
+        />
 
-        <button onClick={this.handleSearchSubmit}></button>
         <div className="movie-list-container">
           <MovieList movies={this.state.movies}/>
         </div>
@@ -70,3 +74,4 @@ class App extends React.Component {
 }
 
 export default App;
+

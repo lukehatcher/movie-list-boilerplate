@@ -9,10 +9,9 @@ class AddMovieBar extends React.Component {
         return (
             <form onSubmit={this.props.handleNewMovieSubmit}>
                 <label>
-                    This is a label
                     <input type="text" onChange={this.props.handleNewMovieChange} placeholder="add a movie" />
                 </label>
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Add" />
             </form>
         )
     }

@@ -7,7 +7,10 @@ class Movie extends React.Component {
 
     render() {
         return (
-            <div>{this.props.movie.title}</div>
+            <div>
+                {this.props.movie.title}
+                <button>not watched</button>
+            </div>
         );
     }
 }
