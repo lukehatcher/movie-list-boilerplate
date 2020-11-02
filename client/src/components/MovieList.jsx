@@ -12,7 +12,12 @@ class MovieList extends React.Component {
 
     render() {
         return (
-        <div>{this.props.movies.map(movie => <Movie movie={movie} key={this.randomKey()} />)}</div>
+        <div>{this.props.movies.map(movie => <Movie 
+            movie={movie} 
+            handleWatchedButton={this.props.handleWatchedButton} 
+            key={this.randomKey()} 
+            />)}
+        </div>
         );
     }
 }

@@ -1,24 +1,17 @@
 import React from 'react';
 
-class SearchBar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    
-    render() {
-        return (
-            // <div className="searchBarContainer">
-            //     <input type="text" onChange={this.props.handleSearchInput} placeholder="Search for a movie!"></input>
-            // </div>
-
-            <form onSubmit={this.props.handleSearchSubmit}>
+const SearchBar = (props) => {
+    return (
+        <div>
+            <form onSubmit={props.handleSearchSubmit}>
                 <label>
-                    <input type="text" onChange={this.props.handleSearchInput} placeholder="search for a movie" />
+                    <input type="text" onChange={props.handleSearchInput} placeholder="search for a movie" />
                 </label>
                 <input type="submit" value="Search" />
             </form>
-        );
-    }
-}
+        </div>
+        
+    );
+};
 
 export default SearchBar;
