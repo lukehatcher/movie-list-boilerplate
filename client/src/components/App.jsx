@@ -9,10 +9,10 @@ class App extends React.Component {
     super(props)
     this.state = {
       movies: [],
-      shownMovies: [],
+      shownMovies: [], // is a temp view for the search movies bassically
       searchValue: '',
       newMovieValue: '',
-      toggle: false
+      toggle: false // toggle the search view on/off, will render
     }
 
     this.handleSearchInput = this.handleSearchInput.bind(this);
@@ -30,27 +30,31 @@ class App extends React.Component {
   handleNewMovieSubmit(e) {
     e.preventDefault();
     this.setState({
-      movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}],
-      shownMovies: [...this.state.shownMovies, {title: this.state.newMovieValue, watched: true}]
-    })
+      movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
+    });
   }
 
   handleWatchedButton(movieTitle) {
-    
-    let newMovieTemp = [...this.state.movies];
-    for (let i = 0; i < newMovieTemp.length; i++) {
-      if (newMovieTemp[i].title === movieTitle) {
-        newMovieTemp[i].watched = !newMovieTemp[i].watched;
-        break;
+    if (this.state.toggle === true) {
+      // need to edit both the visable state and the master
+      this.setState({
+        shownMovies: [{
+          title: this.state.searchValue,
+          watched: !this.state.shownMovies[0].watched
+        }]
+      });
+    } else {
+      let newMovieTemp = [...this.state.movies];
+      for (let i = 0; i < newMovieTemp.length; i++) {
+        if (newMovieTemp[i].title === movieTitle) {
+          newMovieTemp[i].watched = !newMovieTemp[i].watched;
+          break;
+        }
       }
+      this.setState({
+        movies: newMovieTemp
+      });
     }
-
-
-
-    this.setState({
-      movies: newMovieTemp,
-      // shownMovies: newShownTemp
-    });
   }
 
   handleSearchInput(e) {
@@ -84,10 +88,10 @@ class App extends React.Component {
   handleSearchReset() {
     if (this.state.toggle === true) {
       this.setState({
-        toggle: false,
+        toggle: false
       });
     } else {
-      alert( 'you already reset your search results');
+      alert('you already reset your search results');
     }
   }
 
