@@ -3,11 +3,11 @@ import React from 'react';
 const NavButtons = (props) => {
     return (
         <nav className="button-nav">
-          <button>
-            show watched
+          <button onClick={props.showWatched}>
+            watched
           </button>
-          <button>
-            show unwatched
+          <button onClick={props.showUnwatched}>
+            to watch
           </button>
           <button onClick={props.handleSearchReset}> 
           reset movie list

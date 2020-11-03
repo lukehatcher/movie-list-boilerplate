@@ -12,7 +12,8 @@ class App extends React.Component {
       shownMovies: [], // is a temp view for the search movies bassically
       searchValue: '',
       newMovieValue: '',
-      toggle: false // toggle the search view on/off, will render
+      toggle: false, // toggle the search view on/off, will render
+      toggle2: false // toggle for the watched/unwatched pages
     }
 
     this.handleSearchInput = this.handleSearchInput.bind(this);
@@ -21,6 +22,8 @@ class App extends React.Component {
     this.handleNewMovieSubmit = this.handleNewMovieSubmit.bind(this);
     this.handleSearchReset = this.handleSearchReset.bind(this);
     this.handleWatchedButton = this.handleWatchedButton.bind(this);
+    this.showWatched = this.showWatched.bind(this);
+    this.showUnwatched = this.showUnwatched.bind(this);
   }
 
   handleNewMovieChange(e) {
@@ -95,6 +98,25 @@ class App extends React.Component {
     }
   }
 
+  showWatched() {
+    // create watched array
+    let watcheds = this.state.movies.filter(x => x.watched);
+    this.setState({
+      shownMovies: watcheds,
+      toggle2: true
+    });
+    // toggle on 
+    // reset state
+  }
+
+  showUnwatched() {
+    let unwatcheds = this.state.movies.filter(x => !x.watched);
+    this.setState({
+      shownMovies: unwatcheds,
+      toggle2: true
+    });
+  }
+
   render() {
     console.log('JUST RERENDERED!');
     return (
@@ -111,11 +133,13 @@ class App extends React.Component {
 
         <NavButtons 
         handleSearchReset={this.handleSearchReset}
+        showUnwatched={this.showUnwatched}
+        showWatched={this.showWatched}
         />
 
         <div className="movie-list-container">
           <MovieList
-          movies={this.state.toggle ? this.state.shownMovies : this.state.movies}
+          movies={(this.state.toggle || this.state.toggle2) ? this.state.shownMovies : this.state.movies}
           handleWatchedButton={this.handleWatchedButton}
           />
         </div>
