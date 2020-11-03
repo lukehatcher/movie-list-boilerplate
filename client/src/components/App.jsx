@@ -8,10 +8,11 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      movies: [], // [{title: 'star wars'}, {title: 'star trek'}...]
+      movies: [],
       shownMovies: [],
       searchValue: '',
-      newMovieValue: ''
+      newMovieValue: '',
+      toggle: false
     }
 
     this.handleSearchInput = this.handleSearchInput.bind(this);
@@ -30,35 +31,25 @@ class App extends React.Component {
     e.preventDefault();
     this.setState({
       movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}],
-      shownMovies: [...this.state.shownMovies, {title: this.state.newMovieValue, watched: false}]
+      shownMovies: [...this.state.shownMovies, {title: this.state.newMovieValue, watched: true}]
     })
   }
 
   handleWatchedButton(movieTitle) {
-    // update the bool in both the shown movies and the master movies list
-    let newMovieTemp = this.state.movies;
+    
+    let newMovieTemp = [...this.state.movies];
     for (let i = 0; i < newMovieTemp.length; i++) {
       if (newMovieTemp[i].title === movieTitle) {
         newMovieTemp[i].watched = !newMovieTemp[i].watched;
-        // console.log('changed on click1');
         break;
       }
     }
 
-    let newShownTemp = this.state.shownMovies;
-    for (let i = 0; i < newShownTemp.length; i++) {
-      if (newShownTemp[i].title === movieTitle) {
-        console.log('flip?', newShownTemp[i].watched);
-        newShownTemp[i].watched = !newShownTemp[i].watched;
-        console.log('flip?', newShownTemp[i].watched);
-        // console.log('changed on click2', newShownTemp[i].watched);
-        break;
-      }
-    }
+
 
     this.setState({
       movies: newMovieTemp,
-      shownMovies: newShownTemp
+      // shownMovies: newShownTemp
     });
   }
 
@@ -79,7 +70,8 @@ class App extends React.Component {
       let idx = titles.indexOf(this.state.searchValue);
       let watchedBool = this.state.movies[idx].watched;
       this.setState({
-        shownMovies: [{title: this.state.searchValue, watched: watchedBool}]
+        shownMovies: [{title: this.state.searchValue, watched: watchedBool}],
+        toggle: true
       })
     } else if (this.state.searchValue === '') {
       alert('Please input a valid search query');
@@ -88,18 +80,19 @@ class App extends React.Component {
     }
   }
 
+
   handleSearchReset() {
-    // show movies should equal movies masterlist
-    // console.log('before error: ', this.state.movies);
-    console.log('inside reset', this.state.movies);
-    let temp = this.state.movies;
-    this.setState({
-      shownMovies: temp
-    });
+    if (this.state.toggle === true) {
+      this.setState({
+        toggle: false,
+      });
+    } else {
+      alert( 'you already reset your search results');
+    }
   }
 
   render() {
-    console.log('JUST RERENDERED!!!');
+    console.log('JUST RERENDERED!');
     return (
       <div className="main-container">
         <AddMovieBar 
@@ -118,7 +111,7 @@ class App extends React.Component {
 
         <div className="movie-list-container">
           <MovieList
-          movies={this.state.shownMovies}
+          movies={this.state.toggle ? this.state.shownMovies : this.state.movies}
           handleWatchedButton={this.handleWatchedButton}
           />
         </div>
