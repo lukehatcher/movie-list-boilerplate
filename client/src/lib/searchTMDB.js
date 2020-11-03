@@ -1,23 +1,30 @@
 import TMDB_API_KEY from '../config/api.js';
 import axios from 'axios';
 // had to add "type": "module" in package.json for imports to work
+// then had to remove that line cause npm build and start wouldnt work
 
 const searchTMDB = (query, cb) => {
     query = encodeURI(query);
     let url = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&language=en-US&query=${query}`;
     axios.get(url)
         .then((response) => {
-            // in axios res.data is the good stuff
-            // console.log(response.data.results[0]);
-            cb(response.data.results[0]) // gives first search result
+
+            if (response.data.results.length > 0) {
+                cb(response);
+            } else {
+                alert('could not find your movie, try again');
+            }
         })
         .catch((error) => {
             console.log(error);
         });
 };
 
-searchTMDB('star wars', (movie) => {console.log(movie)});
+export default searchTMDB;
 
+// searchTMDB('star wars', (movie) => {console.log(movie)});
+
+// what data obj for one movie looks like:
 // {
 //     popularity: 72.859,
 //     vote_count: 14486,

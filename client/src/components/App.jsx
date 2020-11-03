@@ -3,6 +3,7 @@ import MovieList from './MovieList.jsx';
 import SearchBar from './SearchBar.jsx';
 import AddMovieBar from './AddMovieBar.jsx';
 import NavButtons from './NavButtons.jsx';
+import searchTMDB from '../lib/searchTMDB.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,32 +33,42 @@ class App extends React.Component {
 
   handleNewMovieSubmit(e) {
     e.preventDefault();
-    this.setState({
-      movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
-    });
+    searchTMDB(this.state.newMovieValue, (response) => {
+      // console.log(response.data.results[0]);
+      console.log(response);
+      this.setState({
+        movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false, data: response.data.results[0]}]
+      });
+    })
+
+    // this.setState({
+    //   movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
+    // });
   }
 
   handleWatchedButton(movieTitle) {
     if (this.state.toggle === true) {
-      // need to edit both the visable state and the master
+      // if were in search view and just see one movie
       this.setState({
         shownMovies: [{
           title: this.state.searchValue,
-          watched: !this.state.shownMovies[0].watched
+          watched: !this.state.shownMovies[0].watched, 
+          data: this.state.shownMovies[0].data
         }]
       });
-    } else {
-      let newMovieTemp = [...this.state.movies];
-      for (let i = 0; i < newMovieTemp.length; i++) {
-        if (newMovieTemp[i].title === movieTitle) {
-          newMovieTemp[i].watched = !newMovieTemp[i].watched;
-          break;
-        }
+    } 
+    // need to update master list everytime
+    let newMovieTemp = [...this.state.movies];
+    for (let i = 0; i < newMovieTemp.length; i++) {
+      if (newMovieTemp[i].title === movieTitle) {
+        newMovieTemp[i].watched = !newMovieTemp[i].watched;
+        break;
       }
-      this.setState({
-        movies: newMovieTemp
-      });
     }
+    this.setState({
+      movies: newMovieTemp,
+    });
+    
   }
 
   handleSearchInput(e) {
@@ -76,8 +87,9 @@ class App extends React.Component {
       // find if that video was watched or not inorder to maintain state
       let idx = titles.indexOf(this.state.searchValue);
       let watchedBool = this.state.movies[idx].watched;
+      let data = this.state.movies[idx].data;
       this.setState({
-        shownMovies: [{title: this.state.searchValue, watched: watchedBool}],
+        shownMovies: [{title: this.state.searchValue, watched: watchedBool, data: data}],
         toggle: true
       })
     } else if (this.state.searchValue === '') {
@@ -89,9 +101,10 @@ class App extends React.Component {
 
 
   handleSearchReset() {
-    if (this.state.toggle === true) {
+    if (this.state.toggle || this.state.toggle2) {
       this.setState({
         toggle: false
+        // toggle2: false
       });
     } else {
       alert('you already reset your search results');
@@ -103,6 +116,7 @@ class App extends React.Component {
     let watcheds = this.state.movies.filter(x => x.watched);
     this.setState({
       shownMovies: watcheds,
+      toggle: true,
       toggle2: true
     });
     // toggle on 
@@ -113,6 +127,7 @@ class App extends React.Component {
     let unwatcheds = this.state.movies.filter(x => !x.watched);
     this.setState({
       shownMovies: unwatcheds,
+      // toggle: true,
       toggle2: true
     });
   }
