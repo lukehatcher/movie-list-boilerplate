@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon server",
     "build": "webpack -w",
@@ -24,6 +25,7 @@
     "webpack-cli": "^3.3.9"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "nodemon": "^1.19.3"
   }
 }

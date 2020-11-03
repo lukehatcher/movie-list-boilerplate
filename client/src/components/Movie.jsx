@@ -1,42 +1,77 @@
 import React from 'react';
 
-const Movie = (props) => {
-    return (
-        <div>
-            {props.movie.title}
-            <button onClick={() => {
-                props.handleWatchedButton(props.movie.title);
-            }}>{props.movie.watched ? 'watched' : 'not watched'}
-            </button>
-        </div>
-    );
-};
+class Movie extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            showInfo: false
+        }
+        this.handleNameClick = this.handleNameClick.bind(this);
+    }
 
-export default Movie;
+    handleNameClick() {
+        this.setState({
+            showInfo: !this.state.showInfo
+        });
+    }
 
-// class Movie extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             watchedd: this.props.movie.watched
-//         }
-//     }
+    render() {
+        if (this.state.showInfo) {
+            return (
+                <div>
+                    <span onClick={this.handleNameClick}>{this.props.movie.title}</span>
+                    <button onClick={() => {
+                        this.props.handleWatchedButton(this.props.movie.title);
+                    }}>{this.props.movie.watched ? 'watched' : 'not watched'}
+                    </button>
+                    <p>info and stuff</p>
+                    <p>more info and stuff</p>
+                </div>
+            );
+        }
+        return (
+            <div>
+                <span onClick={this.handleNameClick}>{this.props.movie.title}</span>
+                <button onClick={() => {
+                    this.props.handleWatchedButton(this.props.movie.title);
+                }}>{this.props.movie.watched ? 'watched' : 'not watched'}
+                </button>
+            </div>
+        );
+    }
+}
 
-//     render() {
+
+
+// const Movie = (props) => {
+//     if (props.showInfo) {
+
 //         return (
+//             // with info
 //             <div>
-//                 {this.props.movie.title}
+//                 <p onClick={props.handleNameclick}>{props.movie.title}</p>
 //                 <button onClick={() => {
-//                     this.setState({
-//                         watchedd: !this.state.watched
-//                     }, this.props.handleWatchedButton(this.props.movie.title))
-//                     // this.props.handleWatchedButton(this.props.movie.title);
-//                 }}>{this.state.watchedd ? 'watched' : 'not watched'}
+//                     props.handleWatchedButton(props.movie.title);
+//                 }}>
+//                     {props.movie.watched ? 'watched' : 'not watched'}
 //                 </button>
+//                 <p>info and stuff</p>
+//                 <p>more info and stuff</p>
 //             </div>
 //         );
 //     }
+//     return (
+//         <div>
+//             <h1 onClick={props.handleNameclick}>{props.movie.title}</h1>
+//             <button onClick={() => {
+//                 props.handleWatchedButton(props.movie.title);
+//             }}>{props.movie.watched ? 'watched' : 'not watched'}
+//             </button>
+//         </div>
+//     );
+// };
 
-// }
+export default Movie;
 
-// export default Movie;
+// on click, toggle info state of app
+// send down toggle state

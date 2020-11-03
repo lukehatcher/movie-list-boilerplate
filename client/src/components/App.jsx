@@ -13,7 +13,7 @@ class App extends React.Component {
       searchValue: '',
       newMovieValue: '',
       toggle: false, // toggle the search view on/off, will render
-      toggle2: false // toggle for the watched/unwatched pages
+      toggle2: false, // toggle for the watched/unwatched pages
     }
 
     this.handleSearchInput = this.handleSearchInput.bind(this);
