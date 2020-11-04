@@ -27,13 +27,37 @@ class App extends React.Component {
     this.showUnwatched = this.showUnwatched.bind(this);
   }
 
+  componentDidMount() {
+    this.fetchMoviesFromDB();
+  }
+
+  fetchMoviesFromDB() {
+    axios.get('/api/movies')
+      .then((response) => {
+        // create the  moves array
+        let temp = [];
+        for (let i = 0; i < response.data.length; i++) {
+          temp.push({title: response.data[i].title, watched: false});
+        };
+        // setstate with the new array
+        this.setState({
+          movies: temp
+        })
+        console.log('response from get/fetch!!!!! ',response);
+        console.log(response.data);
+
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   handleNewMovieChange(e) {
     this.state.newMovieValue = e.target.value;
   }
 
   handleNewMovieSubmit(e) {
     e.preventDefault();
-
     // client-server connection
     let url = `api/movies/${encodeURI(this.state.newMovieValue)}`
     axios.post(url)
@@ -44,14 +68,10 @@ class App extends React.Component {
         console.log('fuck');
         console.log(err)
       });
-
-    this.setState({
-      movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
-    });
-
     // this.setState({
     //   movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
     // });
+    this.fetchMoviesFromDB();
   }
 
   handleWatchedButton(movieTitle) {
@@ -122,7 +142,7 @@ class App extends React.Component {
     let watcheds = this.state.movies.filter(x => x.watched);
     this.setState({
       shownMovies: watcheds,
-      toggle: true,
+      // toggle: true,
       toggle2: true
     });
     // toggle on 

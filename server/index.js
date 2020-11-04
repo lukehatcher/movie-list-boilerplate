@@ -20,13 +20,17 @@ app.post('/api/movies/:movieTitle', (req, res) => {
   })
 });
 
-app.all('/', (req, res) => {
-  res.send('Hello world!');
-});
-
-// app.get('/', (req, res) => {
-//   res.send('hellow world');
-// });
+app.get('/api/movies', (req, res) => {
+  // can't call it '/' beccause of the insert
+  let queryString = 'select * from movies';
+  db.query(queryString, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(data);
+    }
+  })
+})
 
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
