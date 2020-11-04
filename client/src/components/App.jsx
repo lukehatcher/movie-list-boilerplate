@@ -3,7 +3,7 @@ import MovieList from './MovieList.jsx';
 import SearchBar from './SearchBar.jsx';
 import AddMovieBar from './AddMovieBar.jsx';
 import NavButtons from './NavButtons.jsx';
-import searchTMDB from '../lib/searchTMDB.js';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -33,13 +33,21 @@ class App extends React.Component {
 
   handleNewMovieSubmit(e) {
     e.preventDefault();
-    searchTMDB(this.state.newMovieValue, (response) => {
-      // console.log(response.data.results[0]);
-      console.log(response);
-      this.setState({
-        movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false, data: response.data.results[0]}]
+
+    // client-server connection
+    let url = `api/movies/${encodeURI(this.state.newMovieValue)}`
+    axios.post(url)
+      .then(() => {
+        console.log('axios post worked');
+      })
+      .catch((err) => {
+        console.log('fuck');
+        console.log(err)
       });
-    })
+
+    this.setState({
+      movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
+    });
 
     // this.setState({
     //   movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
@@ -52,8 +60,7 @@ class App extends React.Component {
       this.setState({
         shownMovies: [{
           title: this.state.searchValue,
-          watched: !this.state.shownMovies[0].watched, 
-          data: this.state.shownMovies[0].data
+          watched: !this.state.shownMovies[0].watched
         }]
       });
     } 
@@ -87,9 +94,8 @@ class App extends React.Component {
       // find if that video was watched or not inorder to maintain state
       let idx = titles.indexOf(this.state.searchValue);
       let watchedBool = this.state.movies[idx].watched;
-      let data = this.state.movies[idx].data;
       this.setState({
-        shownMovies: [{title: this.state.searchValue, watched: watchedBool, data: data}],
+        shownMovies: [{title: this.state.searchValue, watched: watchedBool}],
         toggle: true
       })
     } else if (this.state.searchValue === '') {

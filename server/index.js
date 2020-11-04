@@ -8,17 +8,16 @@ const publicPath = path.resolve('_dirname','..', 'public' );
 
 app.use(express.static(publicPath));
 
-app.get('/api/movies', (req, res) => {
-  let exampleData = [
-    {
-      title: 'star wars', 
-      watched: false
-    },
-    {
-      title: 'star trek',
-      watched: false
-    }];
-  res.send(exampleData);
+app.post('/api/movies/:movieTitle', (req, res) => {
+  let queryString = 'insert into movies (title) values (?)';
+  let queryArgs = req.params.movieTitle;
+  db.query(queryString, queryArgs, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(201);
+    }
+  })
 });
 
 app.all('/', (req, res) => {
