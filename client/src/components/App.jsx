@@ -65,7 +65,6 @@ class App extends React.Component {
         console.log('axios post worked');
       })
       .catch((err) => {
-        console.log('fuck');
         console.log(err)
       });
     // this.setState({

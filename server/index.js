@@ -4,7 +4,8 @@ const db = require('../database');
 
 const app = express();
 const PORT = 3000 || process.env.PORT;
-const publicPath = path.resolve('_dirname','..', 'public' );
+
+const publicPath = path.resolve(__dirname,'..', 'public' );
 
 app.use(express.static(publicPath));
 
