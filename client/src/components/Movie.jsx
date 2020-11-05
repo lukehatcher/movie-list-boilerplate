@@ -24,9 +24,9 @@ class Movie extends React.Component {
                         this.props.handleWatchedButton(this.props.movie.title);
                     }}>{this.props.movie.watched ? 'watched' : 'not watched'}
                     </button>
-                    <p>{`popularity: ${this.props.movie.data.popularity}`}</p>
-                    <p>{`overview: ${this.props.movie.data.overview}`}</p>
-                    <p>{`release date: ${this.props.movie.data.release_date}`}</p>
+                    <p>{`popularity: ${this.props.movie.popularity}`}</p>
+                    <p>{`overview: ${this.props.movie.overview}`}</p>
+                    <p>{`release date: ${this.props.movie.release_date}`}</p>
                 </div>
             );
         }

@@ -34,18 +34,9 @@ class App extends React.Component {
   fetchMoviesFromDB() {
     axios.get('/api/movies')
       .then((response) => {
-        // create the  moves array
-        let temp = [];
-        for (let i = 0; i < response.data.length; i++) {
-          temp.push({title: response.data[i].title, watched: false});
-        };
-        // setstate with the new array
         this.setState({
-          movies: temp
-        })
-        console.log('response from get/fetch!!!!! ',response);
-        console.log(response.data);
-
+          movies: response.data
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -66,11 +57,10 @@ class App extends React.Component {
       })
       .catch((err) => {
         console.log(err)
+      })
+      .then(() => {
+        this.fetchMoviesFromDB();
       });
-    // this.setState({
-    //   movies: [...this.state.movies, {title: this.state.newMovieValue, watched: false}]
-    // });
-    this.fetchMoviesFromDB();
   }
 
   handleWatchedButton(movieTitle) {
@@ -128,8 +118,8 @@ class App extends React.Component {
   handleSearchReset() {
     if (this.state.toggle || this.state.toggle2) {
       this.setState({
-        toggle: false
-        // toggle2: false
+        toggle: false,
+        toggle2: false
       });
     } else {
       alert('you already reset your search results');
